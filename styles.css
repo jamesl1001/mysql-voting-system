@@ -85,7 +85,7 @@ hr {
 	background: #C00;
 }
 
-.vote-bar-up:hover.vote-bar-up::before {
+/*.vote-bar-up:hover.vote-bar-up::before {
 	content: '40%';
 	position: relative;
 	bottom: 20px;
@@ -95,4 +95,4 @@ hr {
 	content: '60%';
 	position: relative;
 	bottom: 20px;
-}
+}*/
