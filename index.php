@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 	<title>mysql-voting-system</title>
 	<link rel="stylesheet" type="text/css" href="styles.css" />
-	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 </head>
 <body>
 	<h1>mysql-voting-system</h1>
@@ -13,40 +12,31 @@
 	<hr>
 
 	<?php
-		include("db.php");
+	include('php/db.php');
 
-		$STH = $DBH->query('SELECT id, item_id, vote_up, vote_down FROM votingSystem_votes');
+	$STH = $DBH->query('SELECT count(*) AS items FROM votingSystem_items');
+	$STH->setFetchMode(PDO::FETCH_OBJ);
+	$items = $STH->fetch();
+
+	for($i = 1; $i <= $items->items; $i++):
+		$STH = $DBH->query("SELECT SUM(vote_up) AS vote_up, SUM(vote_down) AS vote_down FROM votingSystem_votes WHERE item_id = $i");
 		$STH->setFetchMode(PDO::FETCH_OBJ);
+		$votes = $STH->fetch();
+	?>
+		<div class="item" id="item-<?= $i; ?>">
+			<span class="item-title">Item <?= $i; ?></span>
 
-		while($row = $STH->fetch()): ?>
-			<p><?= $row->id; ?> | <?= $row->item_id; ?> | <?= $row->vote_up; ?> | <?= $row->vote_down; ?></p>
-	<?php endwhile;
-		// Get number of items
-		$STH = $DBH->query('SELECT count(*) AS items FROM votingSystem_items');
-		$STH->setFetchMode(PDO::FETCH_OBJ);
-		$items = $STH->fetch();
+			<div class="vote-up">vote up</div>
+			<div class="vote-down">vote down</div>
 
-		echo "Items: " . $items->items . "<br><br>";
-
-		// $STH2 = $DBH->query('SELECT votingSystem_votes.vote from votingSystem_votes INNER JOIN votingSystem_items ON votingSystem_votes.item_id = votingSystem_items.id');
-		
-		for($i = 1; $i <= $items->items; $i++):
-			$STH = $DBH->query("SELECT SUM(vote_up) AS vote_up, SUM(vote_down) AS vote_down FROM votingSystem_votes WHERE item_id = $i");
-			$STH->setFetchMode(PDO::FETCH_OBJ);
-			$votes = $STH->fetch();
-		?>
-			<div class="item" id="item-<?= $i; ?>">
-				<span class="item-title">Item <?= $i; ?></span>
-
-				<div class="vote-up">vote up</div>
-				<div class="vote-down">vote down</div>
-
-				<div class="vote-bar">
-					<div class="vote-bar-up"><?= $votes->vote_up; ?></div>
-					<div class="vote-bar-down"><?= $votes->vote_down; ?></div>
-				</div>
+			<div class="vote-bar">
+				<div class="vote-bar-up"><?= $votes->vote_up; ?></div>
+				<div class="vote-bar-down"><?= $votes->vote_down; ?></div>
 			</div>
-		<?php endfor; ?>
+		</div>
+	<?php endfor; ?>
+
+	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 
 	<script>
 		$(document).ready(function() {
@@ -64,7 +54,18 @@
 		});
 
 		$('.item').click(function(e) {
-			console.log(e.currentTarget);
+			var vote = e.target.className;
+
+			if(vote == 'vote-up' || vote == 'vote-down') {
+				$.ajax({
+					type: 'GET',
+					url: 'php/vote.php',
+					data: 'item=' + e.currentTarget.id.match(/\d+$/)[0] + "&vote=" + vote,
+					success: function() {
+						alert('Vote successful. Please refresh.');
+					}
+				});
+			}
 		});
 	</script>
 </body>
