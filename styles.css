@@ -23,33 +23,19 @@ hr {
 	box-shadow: 0 1px 1px #000;
 }
 
-.item-title {
+.left {
+	width: 80%;
 	float: left;
+}
+
+.right {
+	width: 20%;
+	float: left;
+}
+
+.item-title {
+	width: 100%;
 	font-size: 2em;
-}
-
-.vote-up,
-.vote-down {
-	width: 32px;
-	height: 32px;
-	background-repeat: no-repeat;
-	float: right;
-	margin-left: 10px;
-	cursor: pointer;
-	text-indent: -150%;
-}
-
-.vote-up {
-	background-image: url(img/vote-up.png);
-}
-
-.vote-down {
-	background-image: url(img/vote-down.png);
-}
-
-.vote-up:hover,
-.vote-down:hover {
-	opacity: .5;
 }
 
 .vote-bar {
@@ -57,7 +43,6 @@ hr {
 	height: 10px;
 	background: #AAA;
 	border-top: 1px solid #EEE;
-	float: left;
 	margin-top: 45px;
 }
 
@@ -96,3 +81,29 @@ hr {
 	position: relative;
 	bottom: 20px;
 }*/
+
+.vote-total {
+	margin: 5px 0;
+	text-align: center;
+}
+
+.vote-up,
+.vote-down {
+	width: 100%;
+	height: 32px;
+	cursor: pointer;
+	text-indent: -9999%;
+}
+
+.vote-up {
+	background: url(img/vote-up.png) center no-repeat;
+}
+
+.vote-down {
+	background: url(img/vote-down.png) center no-repeat;
+}
+
+.vote-up:hover,
+.vote-down:hover {
+	opacity: .5;
+}

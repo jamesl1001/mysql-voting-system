@@ -24,14 +24,19 @@
 		$votes = $STH->fetch();
 	?>
 		<div class="item" id="item-<?= $i; ?>">
-			<span class="item-title">Item <?= $i; ?></span>
+			<div class="left">
+				<span class="item-title">Item <?= $i; ?></span>
 
-			<div class="vote-up">vote up</div>
-			<div class="vote-down">vote down</div>
+				<div class="vote-bar">
+					<div class="vote-bar-up"><?= $votes->vote_up; ?></div>
+					<div class="vote-bar-down"><?= $votes->vote_down; ?></div>
+				</div>
+			</div>
 
-			<div class="vote-bar">
-				<div class="vote-bar-up"><?= $votes->vote_up; ?></div>
-				<div class="vote-bar-down"><?= $votes->vote_down; ?></div>
+			<div class="right">
+				<div class="vote-up">vote up</div>
+				<div class="vote-total"><?= $votes->vote_up - $votes->vote_down; ?></div>
+				<div class="vote-down">vote down</div>
 			</div>
 		</div>
 	<?php endfor; ?>
